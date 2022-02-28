@@ -31,7 +31,7 @@ decryptedMessage = decryption(encryptedMessage, depth)
 rail_fence = {
     "message": message,
     "depth": depth,
-    "encryptedMessage": encryptedMessage,
+    "encryptedMessage": ''.join(encryptedMessage),
     "decryptedMessage": decryptedMessage
 }
 
