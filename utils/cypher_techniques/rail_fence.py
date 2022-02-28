@@ -24,7 +24,7 @@ def decryption(text, n):
 message = sys.argv[1]
 depth = int(sys.argv[2])
 
-encryptedMessage = ''.join(encryption(message, depth))
+encryptedMessage = encryption(message, depth)
 decryptedMessage = decryption(encryptedMessage, depth)
 
 

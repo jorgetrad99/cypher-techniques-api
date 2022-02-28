@@ -13,6 +13,10 @@ app.get('/railfence', (req, res) => {
   res.send('Hello, this is rail-fence cyphering technique endpoint');
 });
 
+app.get('/vigenere', (req, res) => {
+  res.send('Hello, this is vigenère cyphering technique endpoint');
+});
+
 app.get('/railfence/:message&:depth', (req, res) => {
   const { message, depth } = req.params;
 
@@ -29,10 +33,6 @@ app.get('/railfence/:message&:depth', (req, res) => {
   process.stderr.on('data', (data) => {
     console.error(`stderr: ${data}`);
   });
-});
-
-app.get('/vigenere', (req, res) => {
-  res.send('Hello, this is vigenère cyphering technique endpoint');
 });
 
 app.get('/vigenere/:message&:key', (req, res) => {
