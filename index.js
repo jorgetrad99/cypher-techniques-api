@@ -9,6 +9,14 @@ app.get('/', (req, res) => {
   res.send('Hello, this is the server');
 });
 
+app.get('/rail-fence', (req, res) => {
+  res.send('Hello, this is rail-fence cyphering technique endpoint');
+});
+
+app.get('/vigenere', (req, res) => {
+  res.send('Hello, this is vigenère cyphering technique endpoint');
+});
+
 app.get('/vigenere/:message&:key', (req, res) => {
   const { message, key } = req.params;
 

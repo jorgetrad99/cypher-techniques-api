@@ -30,15 +30,6 @@ def decryption(encrypt_text, key):
     return("" . join(orig_text))
 
 
-""" if __name__ == "__main__":
-    string = input("Enter the message: ")
-    keyword = input("Enter the keyword: ")
-    key = generateKey(string, keyword)
-    encrypt_text = encryption(string, key)
-    print("Encrypted message:", encrypt_text)
-    print("Decrypted message:", decryption(encrypt_text, key))
- """
-
 message = sys.argv[1]
 keyword = sys.argv[2]
 key = generateKey(message, keyword)
