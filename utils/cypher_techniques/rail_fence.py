@@ -2,30 +2,76 @@ import sys
 import json
 
 
-def encryption(text, depth):
-    fence = [[None] * len(text) for n in range(depth)]
-    rails = range(depth - 1) + range(depth - 1, 0, -1)
-    for n, x in enumerate(text):
-        fence[rails[n % len(rails)]][n] = x
+def encrypt(clearText, key):
 
-    if 0:  # debug
-        for rail in fence:
-            print(''.join('.' if c is None else str(c) for c in rail))
+    result = ""
 
-    return [c for rail in fence for c in rail if c is not None]
+    matrix = [["" for x in range(len(clearText))] for y in range(key)]
+
+    increment = 1
+    row = 0
+    col = 0
+
+    for c in clearText:
+        if row + increment < 0 or row + increment >= len(matrix):
+            increment = increment * -1
+
+        matrix[row][col] = c
+
+        row += increment
+        col += 1
+
+    for list in matrix:
+        result += "".join(list)
+
+    return result
 
 
-def decryption(text, n):
-    rng = range(len(text))
-    pos = encryption(rng, n)
-    return ''.join(text[pos.index(n)] for n in rng)
+def decrypt(cipherText, key):
+
+    result = ""
+
+    matrix = [["" for x in range(len(cipherText))] for y in range(key)]
+
+    idx = 0
+    increment = 1
+
+    for selectedRow in range(0, len(matrix)):
+        row = 0
+
+        for col in range(0, len(matrix[row])):
+            if row + increment < 0 or row + increment >= len(matrix):
+                increment = increment * -1
+
+            if row == selectedRow:
+                matrix[row][col] += cipherText[idx]
+                idx += 1
+
+            row += increment
+
+    matrix = transpose(matrix)
+    for list in matrix:
+        result += "".join(list)
+
+    return result
+
+
+def transpose(m):
+
+    result = [[0 for y in range(len(m))] for x in range(len(m[0]))]
+
+    for i in range(len(m)):
+        for j in range(len(m[0])):
+            result[j][i] = m[i][j]
+
+    return result
 
 
 message = sys.argv[1]
 depth = int(sys.argv[2])
 
-encryptedMessage = encryption(message, depth)
-decryptedMessage = decryption(encryptedMessage, depth)
+encryptedMessage = encrypt(message, depth)
+decryptedMessage = decrypt(encryptedMessage, depth)
 
 
 rail_fence = {
