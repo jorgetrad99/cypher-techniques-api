@@ -9,11 +9,11 @@ app.get('/', (req, res) => {
   res.send('Hello, this is the server');
 });
 
-app.get('/rail-fence', (req, res) => {
+app.get('/railfence', (req, res) => {
   res.send('Hello, this is rail-fence cyphering technique endpoint');
 });
 
-app.get('/rail-fence/:message&:depth', (req, res) => {
+app.get('/railfence/:message&:depth', (req, res) => {
   const { message, depth } = req.params;
 
   const process = spawn('python', [
