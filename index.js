@@ -13,17 +13,13 @@ app.get('/rail-fence', (req, res) => {
   res.send('Hello, this is rail-fence cyphering technique endpoint');
 });
 
-app.get('/vigenere', (req, res) => {
-  res.send('Hello, this is vigenère cyphering technique endpoint');
-});
-
-app.get('/vigenere/:message&:key', (req, res) => {
-  const { message, key } = req.params;
+app.get('/rail-fence/:message&:depth', (req, res) => {
+  const { message, depth } = req.params;
 
   const process = spawn('python', [
-    'utils/cypher_techniques/vigenere.py',
+    'utils/cypher_techniques/rail_fence.py',
     message,
-    key,
+    depth,
   ]);
 
   process.stdout.on('data', (data) => {
@@ -35,13 +31,17 @@ app.get('/vigenere/:message&:key', (req, res) => {
   });
 });
 
-app.get('/rail-fence/:message&:depth', (req, res) => {
-  const { message, depth } = req.params;
+app.get('/vigenere', (req, res) => {
+  res.send('Hello, this is vigenère cyphering technique endpoint');
+});
+
+app.get('/vigenere/:message&:key', (req, res) => {
+  const { message, key } = req.params;
 
   const process = spawn('python', [
-    'utils/cypher_techniques/rail_fence.py',
+    'utils/cypher_techniques/vigenere.py',
     message,
-    depth,
+    key,
   ]);
 
   process.stdout.on('data', (data) => {

@@ -2,45 +2,64 @@ import sys
 import json
 
 
-def generateKey(string, key):
-    key = list(key)
-    if len(string) == len(key):
-        return(key)
-    else:
-        for i in range(len(string) - len(key)):
-            key.append(key[i % len(key)])
-    return("" . join(key))
+def _pad_key(plaintext, key):
+    padded_key = ''
+    i = 0
+    for char in plaintext:
+        if char.isalpha():
+            padded_key += key[i % len(key)]
+            i += 1
+        else:
+            padded_key += ' '
+    return padded_key
 
 
-def encryption(string, key):
-    encrypt_text = []
-    for i in range(len(string)):
-        x = (ord(string[i]) + ord(key[i])) % 26
-        x += ord('A')
-        encrypt_text.append(chr(x))
-    return("" . join(encrypt_text))
+def _encrypt_decrypt_char(plaintext_char, key_char, mode='encrypt'):
+    if plaintext_char.isalpha():
+        first_alphabet_letter = 'a'
+        if plaintext_char.isupper():
+            first_alphabet_letter = 'A'
+
+        old_char_position = ord(plaintext_char) - ord(first_alphabet_letter)
+        key_char_position = ord(key_char.lower()) - ord('a')
+
+        if mode == 'encrypt':
+            new_char_position = (old_char_position + key_char_position) % 26
+        else:
+            new_char_position = (old_char_position -
+                                 key_char_position + 26) % 26
+        return chr(new_char_position + ord(first_alphabet_letter))
+    return plaintext_char
 
 
-def decryption(encrypt_text, key):
-    orig_text = []
-    for i in range(len(encrypt_text)):
-        x = (ord(encrypt_text[i]) - ord(key[i]) + 26) % 26
-        x += ord('A')
-        orig_text.append(chr(x))
-    return("" . join(orig_text))
+def encrypt(plaintext, key):
+    ciphertext = ''
+    padded_key = _pad_key(plaintext, key)
+    for plaintext_char, key_char in zip(plaintext, padded_key):
+        ciphertext += _encrypt_decrypt_char(plaintext_char, key_char)
+    return ciphertext
+
+
+def decrypt(ciphertext, key):
+    plaintext = ''
+    padded_key = _pad_key(ciphertext, key)
+    for ciphertext_char, key_char in zip(ciphertext, padded_key):
+        plaintext += _encrypt_decrypt_char(ciphertext_char,
+                                           key_char, mode='decrypt')
+    return plaintext
 
 
 message = sys.argv[1]
 keyword = sys.argv[2]
-key = generateKey(message, keyword)
-encryptedMessage = encryption(message, key)
-decryptedMessage = decryption(encryptedMessage, key)
+
+encryptedMessage = encrypt(message, keyword)
+decryptedMessage = decrypt(encryptedMessage, keyword)
 
 
 vigenere = {
     "message": message,
     "keyword": keyword,
-    "generatedKey": key,
+    "generatedKey": _pad_key(message, keyword),
     "encryptedMessage": encryptedMessage,
     "decryptedMessage": decryptedMessage
 }
