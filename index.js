@@ -17,6 +17,25 @@ app.get('/vigenere/:message&:key', (req, res) => {
     message,
     key,
   ]);
+
+  process.stdout.on('data', (data) => {
+    res.json(JSON.parse(data.toString()));
+  });
+
+  process.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+  });
+});
+
+app.get('/rail-fence/:message&:depth', (req, res) => {
+  const { message, depth } = req.params;
+
+  const process = spawn('python', [
+    'utils/cypher_techniques/rail_fence.py',
+    message,
+    depth,
+  ]);
+
   process.stdout.on('data', (data) => {
     res.json(JSON.parse(data.toString()));
   });
