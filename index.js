@@ -6,19 +6,34 @@ const { spawn } = require('child_process');
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
+var whitelist = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'https://sbc-administration-security.vercel.app/',
+];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+
+app.get('/', cors(corsOptions), (req, res) => {
   res.send('Hello, this is the server');
 });
 
-app.get('/railfence', (req, res) => {
+app.get('/railfence', cors(corsOptions), (req, res) => {
   res.send('Hello, this is rail-fence cyphering technique endpoint');
 });
 
-app.get('/vigenere', (req, res) => {
+app.get('/vigenere', cors(corsOptions), (req, res) => {
   res.send('Hello, this is vigenère cyphering technique endpoint');
 });
 
-app.get('/railfence/:message&:depth', (req, res) => {
+app.get('/railfence/:message&:depth', cors(corsOptions), (req, res) => {
   const { message, depth } = req.params;
 
   const process = spawn('python', [
@@ -36,7 +51,7 @@ app.get('/railfence/:message&:depth', (req, res) => {
   });
 });
 
-app.get('/vigenere/:message&:key', (req, res) => {
+app.get('/vigenere/:message&:key', cors(corsOptions), (req, res) => {
   const { message, key } = req.params;
 
   const process = spawn('python', [
@@ -53,8 +68,6 @@ app.get('/vigenere/:message&:key', (req, res) => {
     console.error(`stderr: ${data}`);
   });
 });
-
-app.use(cors());
 
 app.listen(port, () => {
   console.log('Mi port' + port);
