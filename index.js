@@ -10,7 +10,7 @@ var whitelist = [
   'http://localhost:3000',
   'http://localhost:3001',
   'http://localhost:3002',
-  'https://sbc-administration-security.vercel.app/',
+  'https://sbc-administration-security.vercel.app',
 ];
 var corsOptions = {
   origin: function (origin, callback) {
