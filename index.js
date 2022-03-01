@@ -1,9 +1,12 @@
 const express = require('express');
 /* const actionHandler = require('./utils/actionHandler'); */
+const cors = require('cors');
 const { spawn } = require('child_process');
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send('Hello, this is the server');
