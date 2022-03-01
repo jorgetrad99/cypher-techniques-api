@@ -6,8 +6,6 @@ const { spawn } = require('child_process');
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors());
-
 app.get('/', (req, res) => {
   res.send('Hello, this is the server');
 });
@@ -55,6 +53,8 @@ app.get('/vigenere/:message&:key', (req, res) => {
     console.error(`stderr: ${data}`);
   });
 });
+
+app.use(cors());
 
 app.listen(port, () => {
   console.log('Mi port' + port);
