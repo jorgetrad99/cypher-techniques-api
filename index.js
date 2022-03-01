@@ -9,6 +9,7 @@ const port = process.env.PORT || 3000;
 var whitelist = [
   'http://localhost:3000',
   'http://localhost:3001',
+  'http://localhost:3002',
   'https://sbc-administration-security.vercel.app/',
 ];
 var corsOptions = {
@@ -20,6 +21,11 @@ var corsOptions = {
     }
   },
 };
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
 
 app.get('/', cors(corsOptions), (req, res) => {
   res.send('Hello, this is the server');
